@@ -1,0 +1,159 @@
+FileVersion = 1
+LastConfig = "Debug"
+LastPlatform = "Win64"
+RecentFilesList = ["Example\\src\\Program.bf", "src\\Classes\\OnnxApi.bf", "Tests\\src\\Tests\\OnnxSetupTests.bf"]
+
+[MainWindow]
+X = 382
+Y = 68
+Width = 1178
+Height = 884
+ShowKind = "ShowMaximized"
+
+[MainDockingFrame]
+Type = "DockingFrame"
+SplitType = 2
+
+[[MainDockingFrame.DockedWidgets]]
+RequestedWidth = 358.0
+RequestedHeight = 208.0
+SizePriority = 208.0
+Type = "DockingFrame"
+SplitType = 1
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets]]
+RequestedWidth = 304.0
+RequestedHeight = 208.0
+Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Workspace"
+TabWidth = 112.5
+TabIsPinned = false
+Type = "ProjectPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets]]
+IsFillWidget = true
+Permanent = true
+RequestedWidth = 150.0
+RequestedHeight = 150.0
+SizePriority = 150.0
+DefaultDocumentsTabbedView = true
+Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Program.bf"
+TabWidth = 102.8846
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "Example\\src\\Program.bf"
+CursorPos = 246
+ProjectName = "Example"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "OnnxApi.bf"
+TabWidth = 100.9615
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Classes\\OnnxApi.bf"
+CursorPos = 353
+VertPos = 51.0
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "OnnxSetupTests.bf"
+TabWidth = 142.3077
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "Tests\\src\\Tests\\OnnxSetupTests.bf"
+CursorPos = 169
+ProjectName = "Tests"
+
+[[MainDockingFrame.DockedWidgets]]
+RequestedWidth = 260.0
+RequestedHeight = 257.0
+Type = "DockingFrame"
+SplitType = 1
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets]]
+RequestedWidth = 260.0
+RequestedHeight = 260.0
+SizePriority = 1918.0
+Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Errors"
+TabWidth = 84.61539
+TabIsPinned = false
+Type = "ErrorsPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Memory"
+TabWidth = 97.11539
+TabIsPinned = false
+Type = "MemoryPanel"
+AutoResize = "Auto_Mul8"
+RequestedWidth = 300.0
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Watch"
+TabWidth = 84.61539
+TabIsPinned = false
+Type = "WatchPanel"
+Columns = [{Width = 208.0}, {Width = 208.0}, {Width = 208.0}]
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs.Items]]
+EvalStr = ""
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Auto"
+TabWidth = 75.96154
+TabIsPinned = false
+Type = "AutoWatchPanel"
+Columns = [{Width = 208.0}, {Width = 208.0}, {Width = 208.0}]
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets]]
+RequestedWidth = 260.0
+RequestedHeight = 260.0
+SizePriority = 1918.0
+Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Threads"
+TabWidth = 95.19231
+TabIsPinned = false
+Type = "ThreadPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Call Stack"
+TabWidth = 102.8846
+TabIsPinned = false
+Type = "CallStackPanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Immediate"
+TabWidth = 108.6538
+TabIsPinned = false
+Type = "ImmediatePanel"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Output"
+TabWidth = 88.46154
+TabIsPinned = false
+Type = "OutputPanel"
+
+[[BookmarkFolders]]
+Title = ""
+
+[OutputFilters]
+ModuleLoadMessages = false
+ModuleUnloadMessages = false
+ProcessExitMessages = false
+ThreadCreateMessages = false
+ThreadExitMessages = false
+SymbolLoadMessages = false
+ProgramOutput = false

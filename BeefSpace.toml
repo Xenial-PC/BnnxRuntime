@@ -1,0 +1,11 @@
+FileVersion = 1
+Projects = {OnnxRuntime = {Path = "."}, Example = {Path = "Example"}}
+
+[Workspace]
+StartupProject = "Example"
+
+[Configs.Debug.Win64]
+ConfigSelections = {Tests = {Enabled = false, Config = "Test"}}
+
+[Configs.Test.Win64]
+ConfigSelections = {OnnxRuntime = {Config = "Debug"}}
