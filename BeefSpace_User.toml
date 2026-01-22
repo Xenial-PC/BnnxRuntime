@@ -1,7 +1,7 @@
 FileVersion = 1
-LastConfig = "Debug"
+LastConfig = "Release"
 LastPlatform = "Win64"
-RecentFilesList = ["Example\\src\\Program.bf", "src\\Classes\\OnnxApi.bf", "Tests\\src\\Tests\\OnnxSetupTests.bf"]
+RecentFilesList = ["Example\\src\\Program.bf", "src\\InferenceSession.bf"]
 
 [MainWindow]
 X = 382
@@ -43,33 +43,23 @@ DefaultDocumentsTabbedView = true
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-Active = true
-TabLabel = "Program.bf"
-TabWidth = 102.8846
+TabLabel = "InferenceSession.bf"
+TabWidth = 137.6923
 TabIsPinned = false
 Type = "SourceViewPanel"
-FilePath = "Example\\src\\Program.bf"
-CursorPos = 246
-ProjectName = "Example"
-
-[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "OnnxApi.bf"
-TabWidth = 100.9615
-TabIsPinned = false
-Type = "SourceViewPanel"
-FilePath = "src\\Classes\\OnnxApi.bf"
-CursorPos = 353
-VertPos = 51.0
+FilePath = "src\\InferenceSession.bf"
+CursorPos = 9006
 ProjectName = "OnnxRuntime"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-TabLabel = "OnnxSetupTests.bf"
-TabWidth = 142.3077
+Active = true
+TabLabel = "Program.bf"
+TabWidth = 93.46154
 TabIsPinned = false
 Type = "SourceViewPanel"
-FilePath = "Tests\\src\\Tests\\OnnxSetupTests.bf"
-CursorPos = 169
-ProjectName = "Tests"
+FilePath = "Example\\src\\Program.bf"
+CursorPos = 145
+ProjectName = "Example"
 
 [[MainDockingFrame.DockedWidgets]]
 RequestedWidth = 260.0
@@ -80,8 +70,14 @@ SplitType = 1
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
 RequestedWidth = 260.0
 RequestedHeight = 260.0
-SizePriority = 1918.0
+SizePriority = 0.4984359
 Type = "TabbedView"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Profile"
+TabWidth = 85.57693
+TabIsPinned = false
+Type = "ProfilePanel"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 Active = true
@@ -118,7 +114,7 @@ Columns = [{Width = 208.0}, {Width = 208.0}, {Width = 208.0}]
 [[MainDockingFrame.DockedWidgets.DockedWidgets]]
 RequestedWidth = 260.0
 RequestedHeight = 260.0
-SizePriority = 1918.0
+SizePriority = 0.5015641
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]

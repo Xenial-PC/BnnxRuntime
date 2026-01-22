@@ -1,6 +1,3 @@
 *build
 *recovery
-libs/onnxruntime/onnxruntime.pdb
-libs/onnxruntime/onnxruntime_providers_cuda.dll
-libs/onnxruntime/onnxruntime_providers_cuda.lib
-libs/onnxruntime/onnxruntime_providers_cuda.pdb
+

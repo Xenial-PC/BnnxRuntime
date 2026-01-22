@@ -4,3 +4,6 @@ Dependencies = {corlib = "*", OnnxRuntime = "*"}
 [Project]
 Name = "Example"
 StartupObject = "Example.Program"
+
+[Configs.Release.Win64]
+PostBuildCmds = ["CopyFilesIfNewer(\"$(WorkspaceDir)/exampleData/*.onnx\", \"$(TargetDir)\")"]

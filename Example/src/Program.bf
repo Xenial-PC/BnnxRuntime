@@ -1,22 +1,24 @@
 using System;
-using OnnxRuntime.Classes;
+using System.IO;
+using System.Collections;
+using OnnxRuntime;
+using OnnxRuntime.Native;
 
 namespace Example;
 
 public class Program
 {
-	public static OnnxApi Api;
+	// TODO: Create a full example
+    public static void Main()
+    {
+		var cwd = new String();
+		Directory.GetCurrentDirectory(cwd);
 
-	public static void Main()
-	{
-		Api = new OnnxApi();
+		var inferenceSession = new InferenceSession(scope $"{cwd}/testModel.onnx");
+		inferenceSession.DumpIOWithShapes();
 
-		var onnxVersion = Api.GetVersionString();
-		Console.WriteLine($"Onnx Version: {onnxVersion}");
-
-		delete Api;
-		delete onnxVersion;
-
-		Console.Read();
-	}
+		delete inferenceSession;
+		delete cwd;
+        Console.Read();
+    }
 }

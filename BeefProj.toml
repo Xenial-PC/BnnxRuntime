@@ -6,5 +6,10 @@ TargetType = "BeefLib"
 StartupObject = "OnnxRuntime.Program"
 
 [Configs.Debug.Win64]
-LibPaths = ["$(ProjectDir)\\libs\\onnxruntime\\onnxruntime_providers_shared.lib", "$(ProjectDir)\\libs\\onnxruntime\\onnxruntime.lib"]
+LibPaths = ["$(ProjectDir)\\libs\\onnxruntime\\onnxruntime.lib"]
 PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/libs/onnxruntime/*.dll\")"]
+
+[Configs.Release.Win64]
+LibPaths = ["$(ProjectDir)\\libs\\onnxruntime\\onnxruntime.lib"]
+PostBuildCmds = ["CopyToDependents(\"$(ProjectDir)/libs/onnxruntime/*.dll\")"]
+OptimizationLevel = "OgPlus"
