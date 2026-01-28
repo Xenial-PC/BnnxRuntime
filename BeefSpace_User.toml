@@ -1,7 +1,7 @@
 FileVersion = 1
 LastConfig = "Release"
 LastPlatform = "Win64"
-RecentFilesList = ["Example\\src\\Program.bf", "src\\InferenceSession.bf"]
+RecentFilesList = ["src\\Session\\Tensor.bf", "src\\Session\\DenseTensor.bf", "src\\Session\\TensorUtils\\TensorBase.bf", "src\\Session\\TensorUtils\\TensorElementTypeInfo.bf", "src\\Session\\TensorUtils\\TensorTypeInfo.bf", "src\\Session\\TensorUtils\\TensorElementType.bf", "src\\Session\\Utils\\ArrayUtilities.bf", "src\\SessionOptions.bf", "src\\InferenceSession.bf", "src\\Session\\YoloClass.bf", "src\\Session\\MetaData.bf", "src\\Native\\BFloat16.bf", "src\\Native\\Enums.bf", "src\\Native\\BitOpsUtil.bf", "src\\Native\\Float16.bf", "c:\\Program Files\\BeefLang\\BeefLibs\\corlib\\src\\Object.bf", "src\\Session\\Helpers.bf", "src\\Native\\Functions.bf", "src\\Native\\Structs.bf", "Example\\src\\Program.bf"]
 
 [MainWindow]
 X = 382
@@ -43,27 +43,200 @@ DefaultDocumentsTabbedView = true
 Type = "TabbedView"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "TensorBase.bf"
+TabWidth = 117.3077
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\TensorUtils\\TensorBase.bf"
+CursorPos = 65
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "TensorElementTypeInfo.bf"
+TabWidth = 183.6539
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\TensorUtils\\TensorElementTypeInfo.bf"
+CursorPos = 13
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "TensorTypeInfo.bf"
+TabWidth = 139.4231
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\TensorUtils\\TensorTypeInfo.bf"
+CursorPos = 334
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "TensorElementType.bf"
+TabWidth = 162.5
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\TensorUtils\\TensorElementType.bf"
+CursorPos = 344
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "ArrayUtilities.bf"
+TabWidth = 124.0385
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\Utils\\ArrayUtilities.bf"
+CursorPos = 732
+VertPos = 2193.0
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "BFloat16.bf"
+TabWidth = 91.53846
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\BFloat16.bf"
+CursorPos = 9029
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "BitOpsUtil.bf"
+TabWidth = 99.23077
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\BitOpsUtil.bf"
+CursorPos = 13
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Float16.bf"
+TabWidth = 84.80769
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Float16.bf"
+CursorPos = 3328
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+Active = true
+TabLabel = "Tensor.bf"
+TabWidth = 80.96154
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\Tensor.bf"
+CursorPos = 201
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "DenseTensor.bf"
+TabWidth = 115.5769
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\DenseTensor.bf"
+CursorPos = 188
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "YoloClass.bf"
+TabWidth = 97.30769
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\YoloClass.bf"
+CursorPos = 290
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "MetaData.bf"
+TabWidth = 99.23077
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\MetaData.bf"
+CursorPos = 194
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Enums.bf"
+TabWidth = 80.96154
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Enums.bf"
+CursorPos = 194
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Structs.bf"
+TabWidth = 81.92308
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Structs.bf"
+CursorPos = 16999
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Functions.bf"
+TabWidth = 96.34615
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Functions.bf"
+CursorPos = 7230
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Helpers.bf"
+TabWidth = 87.69231
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Session\\Helpers.bf"
+CursorPos = 3681
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Status.bf"
+TabWidth = 78.07692
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Status.bf"
+CursorPos = 167
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "SessionOptions.bf"
+TabWidth = 130.9615
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\SessionOptions.bf"
+CursorPos = 1342
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
+TabLabel = "Imports.bf"
+TabWidth = 87.69231
+TabIsPinned = false
+Type = "SourceViewPanel"
+FilePath = "src\\Native\\Imports.bf"
+CursorPos = 97
+ProjectName = "OnnxRuntime"
+
+[[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
 TabLabel = "InferenceSession.bf"
 TabWidth = 137.6923
 TabIsPinned = false
 Type = "SourceViewPanel"
 FilePath = "src\\InferenceSession.bf"
-CursorPos = 9006
+CursorPos = 600
+VertPos = 306.0
 ProjectName = "OnnxRuntime"
 
 [[MainDockingFrame.DockedWidgets.DockedWidgets.Tabs]]
-Active = true
 TabLabel = "Program.bf"
 TabWidth = 93.46154
 TabIsPinned = false
 Type = "SourceViewPanel"
 FilePath = "Example\\src\\Program.bf"
-CursorPos = 145
+CursorPos = 129
 ProjectName = "Example"
 
 [[MainDockingFrame.DockedWidgets]]
 RequestedWidth = 260.0
-RequestedHeight = 257.0
+RequestedHeight = 256.0
 Type = "DockingFrame"
 SplitType = 1
 

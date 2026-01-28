@@ -186,7 +186,7 @@ public enum OrtLanguageProjection : c_int
 }
 
 [AllowDuplicates]
-public enum OrtAllocatorType : c_int
+public enum OrtAllocatorType : size_t
 {
 	case OrtInvalidAllocator = 18446744073709551615;
 	case OrtDeviceAllocator = 0;
@@ -197,7 +197,7 @@ public enum OrtAllocatorType : c_int
 /** \brief Memory types for allocated memory, execution provider specific types should be extended in each provider.
 */
 [AllowDuplicates]
-public enum OrtMemType : c_int
+public enum OrtMemType : size_t
 {
 	// /// Any CPU memory used by non-CPU execution provider
 	case OrtMemTypeCPUInput = 18446744073709551614;
@@ -283,7 +283,7 @@ public enum OrtCustomOpInputOutputCharacteristic : c_int
 /** \brief Reasons why an execution provider might not be compatible with a device
 */
 [AllowDuplicates]
-public enum OrtDeviceEpIncompatibilityReason : c_int
+public enum OrtDeviceEpIncompatibilityReason : size_t
 {
 	case OrtDeviceEpIncompatibility_NONE = 0;
 	case OrtDeviceEpIncompatibility_DRIVER_INCOMPATIBLE = 1;

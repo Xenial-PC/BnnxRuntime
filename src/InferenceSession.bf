@@ -2,71 +2,53 @@ using System;
 using System.Interop;
 using System.Collections;
 using OnnxRuntime.Native;
+using OnnxRuntime.Session;
 
 namespace OnnxRuntime;
 
+/**
+OnnxRuntime inference session
+*/
 public class InferenceSession
 {
 	/**
-	Onnx ORT Environment
-	*/
-    private OrtEnv* _env;
-
-	/**
-	Session options
-	*/
-    private OrtSessionOptions* _options;
-
-	/**
 	Onnx ORT Session
 	*/
-    private OrtSession* _session;
+    public OrtSession* Session ~ delete _;
 
 	/**
-	Onnx ORT API
+	Interface for OrtApi
 	*/
-    private OrtApi* _ort;
+	public OrtApi* Ort => Options.Ort;
 
 	/**
-	CPU Memory infomation
+	CPU Memory information
 	*/
-	private OrtMemoryInfo* _cpuMemInfo;
+	private OrtMemoryInfo* _cpuMemInfo ~ delete _;
 
 	/**
-	Desired ORT API Version
+	Interface for the current session options
 	*/
-	public const int32 ORT_API_VERSION = 24;
+	public SessionOptions Options ~ delete _;
 
 	/**
-	Access to the session
+	Model Input/Output MetaData
 	*/
-	public OrtSession* Session => _session;
-
-	/**
-	Acces to session options
-	*/
-	public OrtSessionOptions* Options => _options;
+	public MetaData MetaData ~ delete _;
 
 	/**
 	Constructor for initialization of the onnx session
 	*/
-    public this(String modelPath, OrtLoggingLevel logLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_WARNING, int directMlDeviceId = 0)
+    public this(String modelPath, SessionOptions options = default)
     {
-        var apiBase = Imports.OrtGetApiBase();
-        _ort = apiBase.GetApi(ORT_API_VERSION);
+		var options;
+		if (options == default)
+			options = new SessionOptions();
 
-        _env = null;
-        var status = _ort.CreateEnv(logLevel, "InferenceSession", &(_env));
-        _checkStatus(status);
+		Options = options;
 
-        _options = null;
-        status = _ort.CreateSessionOptions(&(_options));
-        _checkStatus(status);
-
-        status = Imports.OrtSessionOptionsAppendExecutionProvider_DML(_options, (int32)directMlDeviceId);
-        _checkStatus(status);
-
-        _session = null;
+		options.Setup();
+        Session = null;
 
 		var alloc = new StdAllocator();
 		
@@ -77,41 +59,58 @@ public class InferenceSession
 
 		modelBuffer[modelPath.Length] = 0;
 
-        status = _ort.CreateSession(_env, modelBuffer, _options, &(_session));
-        _checkStatus(status);
+        var status = Ort.CreateSession(options.Env, modelBuffer, options.Options, &Session);
+        Status.VerifySuccess(Ort, status);
 
 		alloc.Free(modelBuffer);
+
+		MetaData = Helpers.DumpIOWithShapes(this);
     }
 
 	/**
-	Initializes cpu memory information
+	Constructor for initialization of the onnx session
 	*/
-	private void _initCpuMemInfo()
+	public this(uint8[] model, SessionOptions options = default)
 	{
-	    if (_cpuMemInfo != null) return;
-	    _ort.CreateCpuMemoryInfo(
-			OrtAllocatorType.OrtArenaAllocator,
-			OrtMemType.OrtMemTypeDefault,
-			&_cpuMemInfo);
+		if (model.Count <= 0)
+		{
+			Console.WriteLine("Error! Model Byte Length is equal to or less than 0");
+			return;
+		}
+
+		var options;
+		if (options == default)
+			options = new SessionOptions();
+
+		Options = options;
+
+		options.Setup();
+	    Session = null;
+
+	    var status = Ort.CreateSessionFromArray(Options.Env, model.Ptr, (uint64)(model.Count), Options.Options, &Session);
+	    Status.VerifySuccess(Ort, status);
+
+		MetaData = Helpers.DumpIOWithShapes(this);
 	}
 
 	/**
 	Interface for creating a tensor
 	*/
-	public OrtValue* CreateTensor(float* data, int64* shape, int32 rank)
+	public OrtValue* CreateTensor(float* data, int64* shape, int32 rank,
+		ONNXTensorElementDataType dataType = ONNXTensorElementDataType.ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT)
 	{
-	    _initCpuMemInfo();
+	    Helpers.InitCpuMemInfo(ref _cpuMemInfo, Ort);
 
 	    OrtValue* tensor = null;
-	    uint64 bytes = (uint64)(sizeof(float) * _computeNumElements(shape, rank));
+	    uint64 bytes = (uint64)(sizeof(float) * Helpers.ComputeNumElements(shape, rank));
 
-	    _ort.CreateTensorWithDataAsOrtValue(
+	    Ort.CreateTensorWithDataAsOrtValue(
 		    _cpuMemInfo,
 		    data,
 		    bytes,
 		    shape,
 		    (uint64)rank,
-		    ONNXTensorElementDataType.ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT,
+		    dataType,
 		    &tensor
 		);
 
@@ -124,8 +123,8 @@ public class InferenceSession
 	public void Run(char8** inputNames, OrtValue** inputValues, uint64 inputCount,
 	                char8** outputNames, OrtValue** outputValues, uint64 outputCount)
 	{
-	    var status = _ort.Run(
-	        _session,
+	    var status = Ort.Run(
+	        Session,
 	        null,
 	        inputNames,
 	        inputValues,
@@ -134,220 +133,14 @@ public class InferenceSession
 	        outputCount,
 	        outputValues
 	    );
-	    _checkStatus(status);
-	}
-
-	/**
-	Returns tensor mutable data
-	*/
-	public float* GetTensorData(OrtValue* tensor)
-	{
-	    float* data = null;
-	    _ort.GetTensorMutableData(tensor, (void**)&data);
-	    return data;
-	}
-
-	/**
-	Dumps the onnx models IO Names
-	*/
-	public void DumpIONames()
-	{
-	    size_t inCount = 0;
-	    size_t outCount = 0;
-
-	    var st = _ort.SessionGetInputCount(_session, &inCount);
-	    if (_checkStatusRet(st)) return;
-
-	    st = _ort.SessionGetOutputCount(_session, &outCount);
-	    if (_checkStatusRet(st)) return;
-
-	    OrtAllocator* alloc = null;
-	    st = _ort.GetAllocatorWithDefaultOptions(&alloc);
-	    if (_checkStatusRet(st)) return;
-
-	    Console.WriteLine($"Inputs: {inCount}");
-	    for (uint64 i = 0; i < inCount; i++)
-	    {
-	        char8* name = null;
-	        st = _ort.SessionGetInputName(_session, i, alloc, &name);
-	        if (_checkStatusRet(st)) return;
-
-	        if (name == null)
-	        {
-	            Console.WriteLine($"  [{i}] <null name>");
-	            continue;
-	        }
-
-	        Console.WriteLine($"  [{i}] {scope String(name)}");
-
-	        alloc.Free(alloc, name);
-	    }
-
-	    Console.WriteLine($"Outputs: {outCount}");
-	    for (uint64 i = 0; i < outCount; i++)
-	    {
-	        char8* name = null;
-	        st = _ort.SessionGetOutputName(_session, i, alloc, &name);
-	        if (_checkStatusRet(st)) return;
-
-	        if (name == null)
-	        {
-	            Console.WriteLine($"  [{i}] <null name>");
-	            continue;
-	        }
-
-	        Console.WriteLine($"  [{i}] {scope String(name)}");
-
-	        alloc.Free(alloc, name);
-	    }
-	}
-
-	/**
-	Computes the number of elements for the shape
-	*/
-	private int64 _computeNumElements(int64* shape, int32 rank)
-	{
-	    int64 count = 1;
-	    for (int i = 0; i < rank; i++)
-	        count *= shape[i];
-	    return count;
-	}
-
-	/**
-	Checks the ORT Status
-	*/
-	private void _checkStatus(OrtStatus* status)
-	{
-	    if (status == null) return;
-		var msg = new String(_ort.GetErrorMessage(status));
-
-	    Console.WriteLine(msg);
-		delete msg;
-	}
-
-	/**
-	Checks the ORT Status with a return value of bool
-	*/
-	private bool _checkStatusRet(OrtStatus* status)
-	{
-	    if (status == null) return false;
-
-	    var msg = new String(_ort.GetErrorMessage(status));
-	    Console.WriteLine($"ORT ERROR: {msg}");
-	    delete msg;
-
-	    return true;
-	}
-
-	/**
-	Dumps the models IO with Shapes
-	*/
-	public void DumpIOWithShapes()
-	{
-	    size_t inCount = 0;
-	    size_t outCount = 0;
-
-	    var st = _ort.SessionGetInputCount(_session, &inCount);
-	    if (_checkStatusRet(st)) return;
-
-	    st = _ort.SessionGetOutputCount(_session, &outCount);
-	    if (_checkStatusRet(st)) return;
-
-	    OrtAllocator* alloc = null;
-	    st = _ort.GetAllocatorWithDefaultOptions(&alloc);
-	    if (_checkStatusRet(st)) return;
-
-	    Console.WriteLine($"Inputs: {inCount}");
-	    for (size_t i = 0; i < inCount; i++)
-	    {
-	        char8* name = null;
-	        st = _ort.SessionGetInputName(_session, i, alloc, &name);
-	        if (_checkStatusRet(st)) return;
-
-	        Console.WriteLine($"  [{i}] {scope String(name)}");
-
-	        OrtTypeInfo* typeInfo = null;
-	        st = _ort.SessionGetInputTypeInfo(_session, i, &typeInfo);
-	        if (_checkStatusRet(st)) return;
-
-	        OrtTensorTypeAndShapeInfo* tinfo = null;
-	        st = _ort.CastTypeInfoToTensorInfo(typeInfo, &tinfo);
-	        if (_checkStatusRet(st)) return;
-
-			ONNXTensorElementDataType onnxTensorData;
-	        var elemType = _ort.GetTensorElementType(tinfo, &onnxTensorData);
-
-	        size_t rank = 0;
-	        st = _ort.GetDimensionsCount(tinfo, &rank);
-	        if (_checkStatusRet(st)) return;
-
-	        int64* dims = scope int64[(int)rank]*;
-	        st = _ort.GetDimensions(tinfo, dims, rank);
-	        if (_checkStatusRet(st)) return;
-
-	        Console.Write("      type=");
-	        Console.WriteLine((int)((void*)elemType));
-
-	        Console.Write("      shape=[");
-	        for (int r = 0; r < (int)rank; r++)
-	        {
-	            if (r != 0) Console.Write(", ");
-	            Console.Write($"{dims[r]}");
-	        }
-	        Console.WriteLine("]");
-
-	        _ort.ReleaseTypeInfo(typeInfo);
-	        alloc.Free(alloc, name);
-	    }
-
-	    Console.WriteLine($"Outputs: {outCount}");
-	    for (size_t i = 0; i < outCount; i++)
-	    {
-	        char8* name = null;
-	        st = _ort.SessionGetOutputName(_session, i, alloc, &name);
-	        if (_checkStatusRet(st)) return;
-
-	        Console.WriteLine($"  [{i}] {scope String(name)}");
-
-	        OrtTypeInfo* typeInfo = null;
-	        st = _ort.SessionGetOutputTypeInfo(_session, i, &typeInfo);
-	        if (_checkStatusRet(st)) return;
-
-	        OrtTensorTypeAndShapeInfo* tinfo = null;
-	        st = _ort.CastTypeInfoToTensorInfo(typeInfo, &tinfo);
-	        if (_checkStatusRet(st)) return;
-
-			ONNXTensorElementDataType onnxTensorData;
-	        var elemType = _ort.GetTensorElementType(tinfo, &onnxTensorData);
-
-	        size_t rank = 0;
-	        st = _ort.GetDimensionsCount(tinfo, &rank);
-	        if (_checkStatusRet(st)) return;
-
-	        int64* dims = scope int64[(int)rank]*;
-	        st = _ort.GetDimensions(tinfo, dims, rank);
-	        if (_checkStatusRet(st)) return;
-
-	        Console.Write("      type=");
-	        Console.WriteLine((int)((void*)elemType));
-
-	        Console.Write("      shape=[");
-	        for (int r = 0; r < (int)rank; r++)
-	        {
-	            if (r != 0) Console.Write(", ");
-	            Console.Write($"{dims[r]}");
-	        }
-	        Console.WriteLine("]");
-
-	        _ort.ReleaseTypeInfo(typeInfo);
-	        alloc.Free(alloc, name);
-	    }
+	    Status.VerifySuccess(Ort, status);
 	}
 
 	/**
 	Simple interface for creating a tensor from a list
 	*/
-	public OrtValue* CreateTensorFromList(List<float> dataList, int64* shape, int32 rank)
+	public OrtValue* CreateTensor(List<float> dataList, int64* shape, int32 rank,
+		ONNXTensorElementDataType dataType = ONNXTensorElementDataType.ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT)
 	{
 	    var alloc = new StdAllocator();
 	    float* buf = (float*)alloc.Alloc(sizeof(float) * dataList.Count, sizeof(float));
@@ -355,18 +148,18 @@ public class InferenceSession
 	    for (int i = 0; i < dataList.Count; i++)
 	        buf[i] = dataList[i];
 
-	    OrtValue* t = CreateTensor(buf, shape, rank);
+	    OrtValue* t = CreateTensor(buf, shape, rank, dataType);
 	    return t;
 	}
 
 	/**
-	Deconstructor for cleaning up the inference session
+	Cleans up the inference session
 	*/
 	public ~this()
 	{
-		if (_session != null) _ort.ReleaseSession(_session);
-		if (_options != null) _ort.ReleaseSessionOptions(_options);
-		if (_env != null) _ort.ReleaseEnv(_env);
-		if (_cpuMemInfo != null) _ort.ReleaseMemoryInfo(_cpuMemInfo);
+		if (Session != null) Ort.ReleaseSession(Session);
+		if (Options.Env != null) Ort.ReleaseEnv(Options.Env);
+		if (_cpuMemInfo != null) Ort.ReleaseMemoryInfo(_cpuMemInfo);
+		if (Options != null) delete Options;
 	}
 }
